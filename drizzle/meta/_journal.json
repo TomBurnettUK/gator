@@ -15,6 +15,13 @@
       "when": 1751917718245,
       "tag": "0001_wise_vance_astro",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1751977279282,
+      "tag": "0002_chief_quentin_quire",
+      "breakpoints": true
     }
   ]
 }
