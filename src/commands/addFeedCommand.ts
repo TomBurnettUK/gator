@@ -1,9 +1,12 @@
-import { readConfig } from "src/config";
 import { createFeed, createFeedFollow } from "src/db/queries/feeds";
-import { getUser } from "src/db/queries/users";
+import { User } from "src/db/schema";
 import { printFeed } from "src/utils";
 
-export async function handlerAddFeed(cmdName: string, ...args: string[]) {
+export async function handlerAddFeed(
+  cmdName: string,
+  user: User,
+  ...args: string[]
+) {
   const [name, url] = [...args];
 
   if (!name || !url) {
@@ -12,10 +15,8 @@ export async function handlerAddFeed(cmdName: string, ...args: string[]) {
     );
   }
 
-  const { currentUserName } = readConfig();
-  const currentUser = await getUser(currentUserName);
-  const createdFeed = await createFeed(name, url, currentUser.id);
-  await createFeedFollow(createdFeed.id, currentUser.id);
+  const createdFeed = await createFeed(name, url, user.id);
+  await createFeedFollow(createdFeed.id, user.id);
 
-  printFeed(createdFeed, currentUser);
+  printFeed(createdFeed, user);
 }

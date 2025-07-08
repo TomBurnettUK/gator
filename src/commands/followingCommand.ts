@@ -1,14 +1,14 @@
-import { readConfig } from "src/config";
 import { getFeedFollowsForUser } from "src/db/queries/feeds";
-import { getUser } from "src/db/queries/users";
+import { User } from "src/db/schema";
 
-export async function handlerFollowing(cmdName: string, ...args: string[]) {
-  const { currentUserName } = readConfig();
-  const currentUser = await getUser(currentUserName);
+export async function handlerFollowing(
+  cmdName: string,
+  user: User,
+  ...args: string[]
+) {
+  const response = await getFeedFollowsForUser(user.id);
 
-  const response = await getFeedFollowsForUser(currentUser.id);
-
-  console.log(`${currentUserName} is following:`);
+  console.log(`${user.name} is following:`);
   for (const data of response) {
     console.log(data.feeds.name);
   }
