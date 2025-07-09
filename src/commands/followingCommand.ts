@@ -1,4 +1,5 @@
-import { getFeedFollowsForUser } from "src/db/queries/feeds";
+import { getFeedFollowsForUser } from "src/db/queries/feedFollows";
+import {} from "src/db/queries/feeds";
 import { User } from "src/db/schema";
 
 export async function handlerFollowing(

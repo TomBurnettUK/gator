@@ -1,4 +1,5 @@
-import { createFeed, createFeedFollow } from "src/db/queries/feeds";
+import { createFeedFollow } from "src/db/queries/feedFollows";
+import { createFeed } from "src/db/queries/feeds";
 import { User } from "src/db/schema";
 import { printFeed } from "src/utils";
 
