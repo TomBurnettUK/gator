@@ -52,6 +52,22 @@ export const feedFollows = pgTable(
   ]
 );
 
-export type User = typeof users.$inferSelect;
+export const posts = pgTable("posts", {
+  id: uuid("id").primaryKey().defaultRandom().notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+  url: text("url").unique().notNull(),
+  title: text("title"),
+  description: text("description"),
+  publishedAt: timestamp("published_at"),
+  feedId: uuid("feed_id")
+    .references(() => feeds.id)
+    .notNull(),
+});
 
+export type User = typeof users.$inferSelect;
 export type Feed = typeof feeds.$inferSelect;
+export type Post = typeof posts.$inferSelect;

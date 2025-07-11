@@ -1,6 +1,6 @@
 import { getNextFeedToFetch, markFeedFetched } from "src/db/queries/feeds";
+import { createPost } from "src/db/queries/posts";
 import { fetchFeed } from "src/xml";
-import { inspect } from "util";
 
 type TimeFormat = {
   duration: number;
@@ -38,9 +38,20 @@ export async function handlerAgg(cmdName: string, ...args: string[]) {
 
 async function scrapeFeeds() {
   const nextFeed = await getNextFeedToFetch();
+  console.log(`fetching ${nextFeed.name}...`);
   await markFeedFetched(nextFeed.id);
-  const feed = await fetchFeed(nextFeed.url);
-  console.log(inspect(feed, true, null));
+  const feedResult = await fetchFeed(nextFeed.url);
+
+  for (const post of feedResult.channel.item) {
+    // console.log("writing.... ", post.title);
+    await createPost(
+      post.link,
+      nextFeed.id,
+      post.title,
+      post.description,
+      new Date(post.pubDate)
+    );
+  }
 }
 
 function parseDuration(durationStr: string): TimeFormat {
